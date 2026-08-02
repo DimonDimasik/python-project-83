@@ -1,7 +1,7 @@
 export PATH := $(HOME)/.local/bin:$(PATH)
 
 install:
-	uv sync --system
+	uv sync
 
 dev-install:
 	uv sync --group dev
