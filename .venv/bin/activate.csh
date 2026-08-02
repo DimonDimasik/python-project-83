@@ -38,8 +38,8 @@ setenv PATH "$VIRTUAL_ENV:q/bin:$PATH:q"
 
 
 
-if ('python-project-83' != "") then
-    setenv VIRTUAL_ENV_PROMPT 'python-project-83'
+if ('hexlet-code' != "") then
+    setenv VIRTUAL_ENV_PROMPT 'hexlet-code'
 else
     setenv VIRTUAL_ENV_PROMPT "$VIRTUAL_ENV:t:q"
 endif

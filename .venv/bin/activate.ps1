@@ -58,8 +58,8 @@ deactivate -nondestructive
 $VIRTUAL_ENV = $BASE_DIR
 $env:VIRTUAL_ENV = $VIRTUAL_ENV
 
-if ("python-project-83" -ne "") {
-    $env:VIRTUAL_ENV_PROMPT = "python-project-83"
+if ("hexlet-code" -ne "") {
+    $env:VIRTUAL_ENV_PROMPT = "hexlet-code"
 }
 else {
     $env:VIRTUAL_ENV_PROMPT = $( Split-Path $env:VIRTUAL_ENV -Leaf )

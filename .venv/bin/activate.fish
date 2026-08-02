@@ -91,8 +91,8 @@ set -gx PATH "$VIRTUAL_ENV"'/bin' $PATH
 
 # Prompt override provided?
 # If not, just use the environment name.
-if test -n 'python-project-83'
-    set -gx VIRTUAL_ENV_PROMPT 'python-project-83'
+if test -n 'hexlet-code'
+    set -gx VIRTUAL_ENV_PROMPT 'hexlet-code'
 else
     set -gx VIRTUAL_ENV_PROMPT (basename "$VIRTUAL_ENV")
 end

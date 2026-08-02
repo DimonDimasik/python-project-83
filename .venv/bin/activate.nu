@@ -68,10 +68,10 @@ export-env {
     let new_path = ($env | get $path_name | prepend $venv_path)
 
     # If there is no default prompt, then use the env name instead
-    let virtual_env_prompt = (if ('python-project-83' | is-empty) {
+    let virtual_env_prompt = (if ('hexlet-code' | is-empty) {
         ($virtual_env | path basename)
     } else {
-        'python-project-83'
+        'hexlet-code'
     })
 
     let new_env = {

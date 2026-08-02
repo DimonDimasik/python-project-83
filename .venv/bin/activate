@@ -98,8 +98,8 @@ _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 
-if [ "xpython-project-83" != x ] ; then
-    VIRTUAL_ENV_PROMPT="python-project-83"
+if [ "xhexlet-code" != x ] ; then
+    VIRTUAL_ENV_PROMPT="hexlet-code"
 else
     VIRTUAL_ENV_PROMPT=$(basename "$VIRTUAL_ENV")
 fi
