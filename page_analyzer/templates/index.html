@@ -4,17 +4,19 @@
 
 {% block content %}
     <div class="row justify-content-center">
-    <div class="col-md-8">
-        <h1 class="mb-4 text-primary">Page Analyzer</h1>
-        <h3 class="mb-4 text-primary">Check websites for SEO suitability for free</h3>
-        <form action="{{ url_for('main.add_url') }}" method="post" class="row g-3">
-            <div class="col-md-9">
-                <input type="url" name="url" class="form-control" placeholder="https://example.com" required>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary w-100">Check</button>
-            </div>
-        </form>
+        <div class="col-md-8">
+            </div class="p-4 bg-light rounded shadow-sm">
+                <h1 class="mb-4 text-primary">Page Analyzer</h1>
+                <h3 class="mb-4 text-primary">Check websites for SEO suitability for free</h3>
+                <form action="{{ url_for('main.add_url') }}" method="post" class="row g-3">
+                    <div class="col-md-9">
+                        <input type="url" name="url" class="form-control" placeholder="https://example.com" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Check</button>
+                    </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
