@@ -12,6 +12,7 @@ dependencies = [
     "gunicorn>=26.0.0",
     "python-dotenv>=1.0.0",
     "psycopg2-binary>=2.9.0",
+    "validators>=0.28.0",
 ]
 
 [dependency-groups]

@@ -55,4 +55,3 @@ def insert_url(name):
                 result = cur.fetchone()[0]
                 conn.commit()
                 return result
-                
