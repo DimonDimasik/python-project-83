@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages
 )
-from db import get_db_connection, get_all_urls, get_url_by_id, get_url_by_name, insert_url
+from .db import get_db_connection, get_all_urls, get_url_by_id, get_url_by_name, insert_url
 from urllib.parse import urlparse
 import validators
 
@@ -21,8 +21,7 @@ def normalize_url(url):
 
 @bp.route("/")
 def index():
-    messages = get_flashed_messages(with_categories=True)
-    return render_template('index.html', messages=messages)
+    return render_template('index.html')
 
 
 @bp.route('/urls', methods=['POST'])
@@ -48,10 +47,22 @@ def add_url():
     return redirect(url_for('main.show_url', id=url_id))
 
 
+@bp.route('/urls/<int:id>', methods=['GET'])
+def show_url(id):
+    url_data = get_url_by_id(id)
+    if not url_data:
+        flash("URL not found.", "danger")
+        return render_template('index.html'), 404
+    return render_template(
+        'url_show.html',
+        url=url_data
+    )
+
+
 @bp.route('/urls', methods=['GET'])
-def show_url():
-    urls = get_all_urls()
+def list_urls():
+    all_urls = get_all_urls()
     return render_template(
         'urls.html',
-        urls=urls
+        urls=all_urls
     )
