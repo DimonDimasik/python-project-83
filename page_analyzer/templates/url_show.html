@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Website{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Website: {{ url[1] }}</h1>
+        <table class="table table-bordered" data-test="url">
+            <tbody>
+                <tr>
+                    <th scope="row" style="width: 150px;">ID</th>
+                    <td>{{ url[0] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>{{ url[1] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Creation date</th>
+                    <td>{{ url[2].strftime('%d.%m.%Y %H:%M') if url[2] else '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ url_for('main.list_urls') }}" class="btn btn-secondary mt-3">Back to the list</a>
+    </div>
+</div>
+{% endblock %}
