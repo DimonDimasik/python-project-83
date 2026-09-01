@@ -34,7 +34,8 @@ def add_url():
     if len(normalized)>255:
         flash("The URL exceeds 255 characters", "danger")
         return render_template('index.html'), 422
-    if not validators.url(normalized, require_tld=True, public=False):
+    parsed = urlparse(normalized)
+    if not (parsed.scheme and parsed.netloc):
         flash("Invalid URL. Check the format.", "danger")
         return render_template('index.html'), 422
     existing = get_url_by_name(normalized)
