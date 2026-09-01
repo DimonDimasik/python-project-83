@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask
-
+from .app import bp
+app.register_blueprint(bp)
 
 load_dotenv()
 
