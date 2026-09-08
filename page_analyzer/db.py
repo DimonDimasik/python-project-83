@@ -55,3 +55,31 @@ def insert_url(name):
                 result = cur.fetchone()[0]
                 conn.commit()
                 return result
+
+
+def get_checks_by_url_id(url_id):
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                '''
+                SELECT id, url_id, status_code, h1, title, description, created_at 
+                FROM url_checks 
+                WHERE url_id = %s 
+                ORDER BY created_at DESC;
+                ''', 
+                (url_id,)
+            )
+            checks = cur.fetchall()
+            return checks
+
+
+def add_check(url_id):
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                'INSERT INTO url_checks (url_id) VALUES (%s) RETURNING id;',
+                (url_id,)
+                )
+            result = cur.fetchone()[0]
+            conn.commit()
+            return result
