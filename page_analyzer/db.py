@@ -83,3 +83,19 @@ def add_check(url_id):
             result = cur.fetchone()[0]
             conn.commit()
             return result
+
+
+def get_last_check_date(url_id):
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                '''
+                SELECT created_at 
+                FROM url_checks 
+                WHERE url_id = %s 
+                ORDER BY created_at DESC LIMIT 1;
+                ''', 
+                (url_id,)
+            )
+            last_check = cur.fetchone()
+            return last_check[0] if last_check else None
