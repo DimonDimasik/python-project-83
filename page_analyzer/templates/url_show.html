@@ -6,6 +6,7 @@
 <div class="row">
     <div class="col-12">
         <h1 class="mb-4">Website: {{ url['name'] }}</h1>
+        
         <table class="table table-bordered" data-test="url">
             <tbody>
                 <tr>
@@ -22,10 +23,11 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{ url_for('main.list_urls') }}" class="btn btn-secondary mt-3">Back to the list</a>
+        <a href="{{ url_for('main.list_urls') }}" class="btn btn-secondary mt-4">Back to the list</a>
 
-        <form method="post" action="{{ url_for('main.add_url_check', id=url['id']) }}">
-        <button type="submit" class="btn btn-primary">Start check</button>
+        <h3 class="my-4">Checks</h3>
+        <form method="post" action="{{ url_for('main.add_url_check', id=url['id']) }}" class="mb-3">
+            <button type="submit" class="btn btn-primary">Start check</button>
         </form>
 
         <table class="table table-striped" data-test="checks">
