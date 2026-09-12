@@ -23,6 +23,31 @@
             </tbody>
         </table>
         <a href="{{ url_for('main.list_urls') }}" class="btn btn-secondary mt-3">Back to the list</a>
+
+        <form method="post" action="{{ url_for('main.add_url_check', id=url['id']) }}">
+        <button type="submit" class="btn btn-primary">Start check</button>
+        </form>
+
+        <table class="table table-striped" data-test="checks">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for check in checks %}
+            <tr>
+                <td>{{ check['id'] }}</td>
+                <td>{{ check['created_at'].strftime('%d.%m.%Y %H:%M') if check['created_at'] else '' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2" class="text-center">No checks yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

@@ -12,6 +12,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Creation date</th>
+                    <th scope="col">Last check</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,10 +25,11 @@
                         </a>
                     </td>
                     <td>{{ url['created_at'].strftime('%d.%m.%Y %H:%M') if url['created_at'] else '' }}</td>
+                    <td>{{ url['last_check'].strftime('%d.%m.%Y %H:%M') if url['last_check'] else '' }}</td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="3" class="text-center">No sites added</td>
+                    <td colspan="4" class="text-center">No sites added</td>
                 </tr>
                 {% endfor %}
             </tbody>
