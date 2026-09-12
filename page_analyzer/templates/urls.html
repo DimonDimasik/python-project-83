@@ -17,13 +17,13 @@
             <tbody>
                 {% for url in urls %}
                 <tr>
-                    <td>{{ url[0] }}</td>
+                    <td>{{ url['id'] }}</td>
                     <td>
-                        <a href="{{ url_for('main.show_url', id=url[0]) }}">
-                            {{ url[1] }}
+                        <a href="{{ url_for('main.show_url', id=url['id']) }}">
+                            {{ url['name'] }}
                         </a>
                     </td>
-                    <td>{{ url[2].strftime('%d.%m.%Y %H:%M') if url[2] else '' }}</td>
+                    <td>{{ url['created_at'].strftime('%d.%m.%Y %H:%M') if url['created_at'] else '' }}</td>
                 </tr>
                 {% else %}
                 <tr>
