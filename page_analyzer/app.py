@@ -1,9 +1,12 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages
+    Blueprint, render_template, request, redirect, url_for, flash,
 )
-from .db import get_db_connection, get_all_urls, get_url_by_id, get_url_by_name, insert_url
+from .db import (
+    get_all_urls, get_url_by_id, get_url_by_name, insert_url,
+    get_checks_by_url_id, get_last_check_date, add_check
+)
 from urllib.parse import urlparse
-import validators
+
 
 bp = Blueprint("main", __name__)
 
@@ -41,7 +44,7 @@ def add_url():
     existing = get_url_by_name(normalized)
     if existing:
         flash("The URL already exists.", "info")
-        url_id = existing[0]
+        url_id = existing['id']
     else:
         url_id = insert_url(normalized)
         flash("Page successfully added.", "success")
@@ -54,16 +57,38 @@ def show_url(id):
     if not url_data:
         flash("URL not found.", "danger")
         return render_template('index.html'), 404
+    checks = get_checks_by_url_id(id)
     return render_template(
         'url_show.html',
-        url=url_data
+        url=url_data,
+        checks=checks
     )
 
 
 @bp.route('/urls', methods=['GET'])
 def list_urls():
     all_urls = get_all_urls()
+    checked_urls = []
+    for url in all_urls:
+        last_check = get_last_check_date(url['id'])
+        checked_urls.append({
+            'id': url['id'],
+            'name': url['name'],
+            'created_at': url['created_at'],
+            'last_check': last_check
+        })
     return render_template(
         'urls.html',
-        urls=all_urls
+        urls=checked_urls
     )
+
+
+@bp.route('/urls/<int:id>/checks', methods=['POST'])
+def add_url_check(id):
+    check = get_url_by_id(id)
+    if check is None:
+        flash('URL not found.', 'danger')
+        return redirect(url_for('main.index'))
+    add_check(id)
+    flash('Check was added successfully', 'success')
+    return redirect(url_for('main.show_url', id=id))

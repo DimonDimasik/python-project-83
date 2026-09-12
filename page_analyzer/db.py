@@ -21,7 +21,7 @@ def get_db_connection():
 
 def get_all_urls():
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute('SELECT id, name, created_at FROM urls ORDER BY created_at DESC')
             result = cur.fetchall()
     return result
@@ -29,7 +29,7 @@ def get_all_urls():
 
 def get_url_by_id(id):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute('SELECT id, name, created_at FROM urls WHERE id = %s;', (id,))
             result = cur.fetchone()
     return result
@@ -37,7 +37,7 @@ def get_url_by_id(id):
 
 def get_url_by_name(name):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute('SELECT id, name, created_at FROM urls WHERE name = %s;', (name,))
             result = cur.fetchone()
     return result
@@ -45,21 +45,21 @@ def get_url_by_name(name):
 
 def insert_url(name):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute('SELECT id FROM urls WHERE name = %s;', (name,))
             existing = cur.fetchone()
             if existing:
-                return existing[0]
+                return existing['id']
             else:
                 cur.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id;', (name,))
-                result = cur.fetchone()[0]
+                result = cur.fetchone()['id']
                 conn.commit()
                 return result
 
 
 def get_checks_by_url_id(url_id):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
                 '''
                 SELECT id, url_id, status_code, h1, title, description, created_at 
@@ -75,19 +75,19 @@ def get_checks_by_url_id(url_id):
 
 def add_check(url_id):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
                 'INSERT INTO url_checks (url_id) VALUES (%s) RETURNING id;',
                 (url_id,)
                 )
-            result = cur.fetchone()[0]
+            result = cur.fetchone()['id']
             conn.commit()
             return result
 
 
 def get_last_check_date(url_id):
     with get_db_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
                 '''
                 SELECT created_at 
@@ -98,4 +98,4 @@ def get_last_check_date(url_id):
                 (url_id,)
             )
             last_check = cur.fetchone()
-            return last_check[0] if last_check else None
+            return last_check['created_at'] if last_check else None
