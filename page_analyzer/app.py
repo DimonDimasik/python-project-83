@@ -1,9 +1,11 @@
+import requests
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash,
 )
+from requests.exceptions import RequestException
 from .db import (
     get_all_urls, get_url_by_id, get_url_by_name, insert_url,
-    get_checks_by_url_id, get_last_check_date, add_check
+    get_checks_by_url_id, get_last_check, add_check
 )
 from urllib.parse import urlparse
 
@@ -70,12 +72,13 @@ def list_urls():
     all_urls = get_all_urls()
     checked_urls = []
     for url in all_urls:
-        last_check = get_last_check_date(url['id'])
+        last_check = get_last_check(url['id'])
         checked_urls.append({
             'id': url['id'],
             'name': url['name'],
             'created_at': url['created_at'],
-            'last_check': last_check
+            'last_check': last_check['created_at'] if last_check else None,
+            'last_check_status': last_check['status_code'] if last_check else None,
         })
     return render_template(
         'urls.html',
@@ -85,10 +88,18 @@ def list_urls():
 
 @bp.route('/urls/<int:id>/checks', methods=['POST'])
 def add_url_check(id):
-    check = get_url_by_id(id)
-    if check is None:
+    url_data = get_url_by_id(id)
+    if url_data is None:
         flash('URL not found.', 'danger')
         return redirect(url_for('main.index'))
-    add_check(id)
+    url = url_data['name']
+    try:
+        resp = requests.get(url, timeout=5)
+        resp.raise_for_status()
+    except RequestException:
+        flash('An error occurred during verification', 'danger')
+        return redirect(url_for('main.show_url', id=id))
+    status = resp.status_code
+    add_check(id, status)
     flash('Check was added successfully', 'success')
     return redirect(url_for('main.show_url', id=id))
